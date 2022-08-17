@@ -1,0 +1,30 @@
+[
+    {
+        "id": "bilibili-test",
+        "name": "Bilibili Test",
+        "url": "23900931",
+        "type": "bilibili",
+        "icon": "https://doubi.fun/plex-tuner/icons/bilibili.png"
+    },
+    {
+        "id": "bilibili-B",
+        "name": "Bilibili B",
+        "url": "25626782",
+        "type": "bilibili",
+        "icon": "https://doubi.fun/plex-tuner/icons/bilibili.png"
+    },
+    {
+        "id": "7",
+        "name": "CCTV-6电影",
+        "url": "http://stream-shbu.bestvcdn.com:8080/live/program/live/cctv6hd/4000000/mnf.m3u8",
+        "type": "hls",
+        "icon": "https://doubi.fun/plex-tuner/icons/cctv6.png"
+    },
+    {
+        "id": "etone",
+        "name": "Etone Camera",
+        "url": "rtsp://admin:Etonesystem@123@192.168.6.226:554/h264/ch1/main/av_stream",
+        "type": "rtsp",
+        "icon": "https://doubi.fun/plex-tuner/icons/bilibili.png"
+    }
+]
