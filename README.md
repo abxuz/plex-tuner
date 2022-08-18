@@ -8,12 +8,20 @@
 
 ```json
 {
-    "id": "iptv",    // 同一个plex中，id不能重复
-    "tuner_count": 1000,    // plex中同时可以播放的数量（实际上并不限制）
-    "listen": "0.0.0.0:33400", // 监听的端口
-    "channel": "channel.json" // 频道列表文件，支持http/https地址作为源
+    "id": "iptv",
+    "tuner_count": 1000,
+    "listen": "0.0.0.0:33400",
+    "channel": "channel.json"
 }
 ```
+
+id：同一个plex中，id不能重复
+
+tuner_count：plex中同时可以播放的数量（实际上并不限制）
+
+listen：监听的端口
+
+channel：频道列表文件，支持http/https地址作为源
 
 
 
@@ -22,10 +30,10 @@
 ```json
 [
     {
-        "id": "bilibili",    // 在plex所配置的epgxml文件中与channel的id要对应上
-        "name": "Bilibili",  // 在plex所配置的epgxml文件中与channel的名称要对应上
-        "url": "23900931",   // 源地址，如果是bilibili，则
-        "type": "bilibili"   // 源类型，支持hls、rtsp、bilibili
+        "id": "bilibili",
+        "name": "Bilibili",
+        "url": "23900931",
+        "type": "bilibili"
     },
     {
         "id": "7",
@@ -42,7 +50,15 @@
 ]
 ```
 
+id：在plex所配置的epgxml文件中与channel的id要对应上
 
+name：在plex所配置的epgxml文件中与channel的名称要对应上
+
+url：源地址，如果是bilibili，则为Bilibili直播间的id
+
+type：源类型，支持hls、rtsp、bilibili
+
+#### 
 
 #### 开发相关
 
