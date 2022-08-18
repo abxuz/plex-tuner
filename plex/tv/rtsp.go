@@ -11,11 +11,11 @@ import (
 )
 
 type RTSPStream struct {
-	url    string
-	r      *io.PipeReader
-	w      *io.PipeWriter
-	client *rtspv2.RTSPClient
-	codecs []av.CodecData
+	url      string
+	r        *io.PipeReader
+	w        *io.PipeWriter
+	client   *rtspv2.RTSPClient
+	timeline time.Duration
 
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -33,7 +33,6 @@ func (s *RTSPStream) Start() error {
 		URL:                s.url,
 		DialTimeout:        3 * time.Second,
 		ReadWriteTimeout:   3 * time.Second,
-		DisableAudio:       true,
 		InsecureSkipVerify: true,
 	}
 	client, err := rtspv2.Dial(opt)
@@ -44,23 +43,12 @@ func (s *RTSPStream) Start() error {
 
 	go func() {
 		defer s.client.Close()
-
-		s.codecs = make([]av.CodecData, 0)
-		for _, codec := range s.client.CodecData {
-			if codec.Type().IsVideo() {
-				s.codecs = append(s.codecs, codec)
-			}
-		}
-		if len(s.codecs) == 0 {
-			return
-		}
-
 		muxer := mp4f.NewMuxer(nil)
-		err = muxer.WriteHeader(s.codecs)
+		err = muxer.WriteHeader(s.client.CodecData)
 		if err != nil {
 			return
 		}
-		_, init := muxer.GetInit(s.codecs)
+		_, init := muxer.GetInit(s.client.CodecData)
 		_, err = s.w.Write(init)
 		if err != nil {
 			return
@@ -85,7 +73,14 @@ func (s *RTSPStream) Start() error {
 				keyFrameTimeout.Reset(20 * time.Second)
 			}
 
-			ready, buf, _ := muxer.WritePacket(*packet, false)
+			s.timeline += packet.Duration
+			packet.Time = s.timeline
+
+			ready, buf, err := muxer.WritePacket(*packet, false)
+			if err != nil {
+				return
+			}
+
 			if ready {
 				_, err = s.w.Write(buf)
 				if err != nil {

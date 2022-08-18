@@ -2,6 +2,6 @@
     "id": "iptv",
     "tuner_count": 1000,
     "listen": "0.0.0.0:33400",
-    "ffmpeg": "/Users/b/Desktop/ffmpeg",
+    "ffmpeg": "/usr/bin/ffmpeg",
     "channel": "channel.json"
 }
