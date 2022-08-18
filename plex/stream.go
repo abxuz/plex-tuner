@@ -69,7 +69,7 @@ func (p *Plex) createTVStream(channel *Channel) (tv.TVStream, error) {
 		}
 		return tv.NewHLSStream(playlistUrl), nil
 	case "rtsp":
-		return tv.NewFFMpegStream(p.config.FFMpeg, channel.URL), nil
+		return tv.NewRTSPStream(channel.URL), nil
 	case "bilibili":
 		playlistUrl, err := Bilibili.TS(channel.URL)
 		if err != nil {

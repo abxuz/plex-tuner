@@ -9,8 +9,6 @@ import (
 	"syscall"
 )
 
-const Version = "1.0.4"
-
 func main() {
 
 	ctx, stop := signal.NotifyContext(context.Background(),

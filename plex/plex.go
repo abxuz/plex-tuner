@@ -3,10 +3,12 @@ package plex
 import (
 	"context"
 	"flag"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
+	"runtime"
 	"sync"
 )
 
@@ -37,8 +39,15 @@ func (p *Plex) Serve(ctx context.Context) error {
 	p.ctx, p.cancel = context.WithCancel(ctx)
 
 	var config string
-	flag.StringVar(&config, "config", "config.json", "config file path")
+	var version bool
+	flag.BoolVar(&version, "v", false, "show version info")
+	flag.StringVar(&config, "c", "config.json", "config file path")
 	flag.Parse()
+
+	if version {
+		fmt.Println("Version: " + Version + " Runtime: " + runtime.Version())
+		os.Exit(0)
+	}
 
 	c, err := loadConfig(config)
 	if err != nil {

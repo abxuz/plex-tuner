@@ -4,9 +4,7 @@ import (
 	"html"
 	"io"
 	"net/http"
-	"net/url"
 	"path"
-	"plex-tuner/plex/tv"
 
 	"github.com/gorilla/websocket"
 )
@@ -140,11 +138,7 @@ func (p *Plex) stream(w ResponseWriter, r Request) {
 	case "rtsp":
 		p.unsharedStream(w, r, target)
 	case "bilibili":
-		if isPlex(r) {
-			p.sharedStream(w, r, target)
-		} else {
-			p.bilibiliStream(w, r, target)
-		}
+		p.sharedStream(w, r, target)
 	case "redirect":
 		http.Redirect(w, r, target.URL, http.StatusMovedPermanently)
 	default:
@@ -174,27 +168,6 @@ func (p *Plex) unsharedStream(w ResponseWriter, r Request, channel *Channel) {
 		return
 	}
 	p.warpReader(w, r, stream)
-}
-
-func (p *Plex) bilibiliStream(w ResponseWriter, r Request, channel *Channel) {
-	// fmp4 first, it can not be shared
-	playlistUrl, err := Bilibili.FMP4(channel.URL)
-	if err == nil {
-		channelUrl, err := url.Parse(playlistUrl)
-		if err == nil {
-			stream := tv.NewHLSStream(channelUrl)
-			defer stream.Close()
-			if err := stream.Start(); err != nil {
-				internalServerError(w, err.Error())
-				return
-			}
-			p.warpReader(w, r, stream)
-			return
-		}
-	}
-
-	// ts backup, it can be shared
-	p.sharedStream(w, r, channel)
 }
 
 func (p *Plex) warpReader(w ResponseWriter, r Request, reader io.Reader) {

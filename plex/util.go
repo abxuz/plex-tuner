@@ -50,10 +50,6 @@ func isWebsocketUpgrade(r Request) bool {
 	return connection == "upgrade"
 }
 
-func isPlex(r Request) bool {
-	return strings.HasPrefix(r.UserAgent(), "Lavf/")
-}
-
 func getContent(p string) ([]byte, error) {
 	p = strings.TrimSpace(p)
 	if strings.HasPrefix(p, "http://") || strings.HasPrefix(p, "https://") {
